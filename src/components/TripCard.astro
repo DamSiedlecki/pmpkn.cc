@@ -1,7 +1,7 @@
 ---
 import { getEntry, type CollectionEntry } from 'astro:content';
 import { Mountain, Route } from "lucide-react";
-
+import { Image } from "astro:assets";
 
 interface Props {
   trip: CollectionEntry<'trip'>;
@@ -14,9 +14,11 @@ const author = trip.data.author ? await getEntry(trip.data.author) : null;
 <article class="group bg-white dark:bg-[#0f0f12]  overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-800">
   <div class="relative aspect-video overflow-hidden group">
   {trip.data.image && (
-    <img 
+    <Image 
       src={trip.data.image} 
       alt={trip.data.title}
+      width={800}
+      height={450}
       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
     />
   )}

@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 
 const blog = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/data/blog" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
@@ -21,8 +21,9 @@ const blog = defineCollection({
       "wyprawy",
       "testy",
       "sponsor",
+      "aktualności",
     ]),
-    image: z.string().optional(),
+    image: image().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     author: reference("authors"),
@@ -31,7 +32,7 @@ const blog = defineCollection({
 
 const trip = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/data/trasy" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
@@ -41,13 +42,13 @@ const trip = defineCollection({
     gpx: z.boolean().default(false),
     draft: z.boolean().default(false),
     author: reference("authors"),
-    image: z.string().optional(),
+    image: image().optional(),
   }),
 });
 
 const localization = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/data/localization" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     country: z.string(),
@@ -56,7 +57,7 @@ const localization = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     draft: z.boolean().default(false),
-    image: z.string().optional(),
+    image: image().optional(),
   }),
 });
 

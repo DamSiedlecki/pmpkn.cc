@@ -1,5 +1,6 @@
 ---
 import { getEntry, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -12,23 +13,18 @@ const author = await getEntry(post.data.author);
 <article class="group bg-white dark:bg-[#0f0f12] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-800">
   <div class="aspect-video overflow-hidden">
     {post.data.image && (
-      <img 
+      <Image 
         src={post.data.image} 
         alt={post.data.title}
+        width={800}
+        height={450}
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       />
     )}
   </div>
   
   <div class="p-5">
-    <div class="flex gap-2 mb-3">
-      {post.data.tags?.map(tag => (
-        <span class="text-xs font-medium px-2 py-1 bg-orange-100 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 rounded-full">
-          #{tag}
-        </span>
-      ))}
-    </div>
-    
+
     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 transition-colors">
       <a href={`/blog/${post.id}`} class="hover:text-orange-600 transition-colors">
         {post.data.title}
@@ -39,10 +35,13 @@ const author = await getEntry(post.data.author);
       {post.data.description}
     </p>
     
+    <span class="text-xs font-medium  py-1 bg-white dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 ">
+          {post.data.category}
+    </span>
+    |    
     <time class="text-xs text-slate-400">
       {post.data.pubDate.toLocaleDateString('pl-PL', { dateStyle: 'long' })}
     </time>
-    
   <div class="author-info">
     <p class="font-bold text-slate-900 dark:text-white">
       {author.data.name || "Nieznany autor"}
