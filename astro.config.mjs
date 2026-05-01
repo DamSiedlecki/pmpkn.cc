@@ -5,10 +5,12 @@ import react from "@astrojs/react";
 
 import tailwindcss from "@tailwindcss/vite";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://pmpkn.cc",
-  integrations: [react()],
+  integrations: [react(), sitemap()],
   image: {
     domains: ["images.unsplash.com"],
   },
