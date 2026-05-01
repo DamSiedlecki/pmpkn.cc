@@ -1,0 +1,48 @@
+---
+// src/pages/blog/[id].astro
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+
+// 1. Generujemy ścieżki na podstawie ID plików
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post); 
+const imageSrc = post.data.image; 
+import { getEntry } from 'astro:content';
+const author = post.data.author ? await getEntry(post.data.author) : null; 
+const authorImage = author?.data.avatar;
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="max-w-6xl mx-auto px-4 py-16">
+    <header class="mb-8">
+       {imageSrc && <Image src={imageSrc} width={1920} height={1080} alt={post.data.title} class="w-full h-64 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform duration-300" />}
+      <span class="text-orange-600 font-bold uppercase text-sm tracking-widest">{post.data.category}</span>
+      <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mt-2 mb-4 leading-tight transition-colors">
+        {post.data.title}
+      </h1>
+      <time class="text-slate-500 italic">
+        {post.data.pubDate.toLocaleDateString('pl-PL')}
+      </time>
+    </header>
+
+    <div class="prose prose-slate dark:prose-invert lg:prose-xl prose-orange max-w-none transition-colors">
+      <Content />
+    </div>
+    <div class="author-info">
+    <p class="font-bold text-slate-900 dark:text-white">
+      {authorImage && <Image src={authorImage} width={64} height={64} alt={author?.data.name || "Awatar"} class="w-16 h-16 rounded-full mr-3 inline-block object-cover" />}
+      {author?.data.name || "Nieznany autor"}
+    </p>
+    
+  </div>
+  </article>
+</BaseLayout>

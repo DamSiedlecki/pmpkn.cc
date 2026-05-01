@@ -1,0 +1,312 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TripCard from '../../components/TripCard.astro';
+
+const trips = (await getCollection('trip', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+})).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog Rowerowy - Najnowsze wpisy">
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <header class="mb-12">
+      <h1 class="text-5xl font-black text-slate-900 dark:text-white mb-4 text-balance transition-colors">
+        <span class="text-orange-500">Trasy</span> przejechane
+      </h1>
+      <p class="text-lg text-slate-600 dark:text-slate-400 transition-colors">Odkryj najnowsze poradniki i relacje z tras.</p>
+    </header>
+      
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+      <h2 class="text-4xl font-black text-slate-900 dark:text-white text-balance transition-colors">
+        <span class="text-orange-500">Lokalizacje</span> tras
+      </h2>
+      <!-- Wyszukiwarka lokalizacji -->
+      <div class="relative w-full max-w-md">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+      <input 
+        type="text" 
+        id="location-search" 
+        class="w-full pl-12 pr-4 py-3 rounded-full bg-white dark:bg-[#0f0f12] text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-white/5 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all outline-none placeholder:text-slate-400 shadow-sm" 
+        placeholder="Szukaj kraju lub regionu..."
+      />
+    </div>
+    </div>
+
+    <!-- Filtry / Quick-Access -->
+    <div class="flex flex-wrap gap-3 mb-12" id="filterContainer">
+      <button data-filter="" class="js-filter-btn px-6 py-2 rounded-full font-bold text-sm transition border bg-orange-500 text-white hover:bg-orange-600 border-orange-500 cursor-pointer">Wszystkie</button>
+      <button data-filter="polska" class="js-filter-btn px-6 py-2 rounded-full font-bold text-sm transition border bg-white dark:bg-[#0f0f12] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/5 hover:border-orange-500 cursor-pointer">Polska</button>
+      <button data-filter="hiszpania" class="js-filter-btn px-6 py-2 rounded-full font-bold text-sm transition border bg-white dark:bg-[#0f0f12] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/5 hover:border-orange-500 cursor-pointer">Hiszpania</button>
+      <button data-filter="grecja" class="js-filter-btn px-6 py-2 rounded-full font-bold text-sm transition border bg-white dark:bg-[#0f0f12] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/5 hover:border-orange-500 cursor-pointer">Grecja</button>
+    </div>
+    
+
+    <!-- Kafelki Lokalizacji -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <!-- Interaktywny kafelek Polska -->
+      <div tabindex="0" class="js-interactive-tile group relative aspect-4/3 overflow-hidden shadow-sm hover:shadow-xl transition-all rounded-sm cursor-pointer focus:outline-none">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/80 group-focus:bg-black/80 transition-colors z-10 duration-500"></div>
+        <img src="https://images.unsplash.com/photo-1528629297340-d1d466945dc5?q=80&w=1822&auto=format&fit=crop" alt="Polska" class="w-full h-full object-cover group-hover:scale-110 group-hover:blur-sm group-focus:scale-110 group-focus:blur-sm transition-all duration-700" loading="lazy" />
+        
+        <!-- Widok domyślny (znika po najechaniu) -->
+        <div class="absolute bottom-0 left-0 p-6 z-20 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4 group-focus:opacity-0 group-focus:translate-y-4">
+          <h3 class="text-3xl font-['Oswald'] font-bold text-white uppercase italic drop-shadow-md">Polska</h3>
+          <p class="text-slate-200 font-medium mt-1 drop-shadow">Wybierz województwo</p>
+        </div>
+
+        <!-- Lista województw (ukryta domyślnie, pojawia się na hover/focus) -->
+        <div class="absolute inset-0 z-30 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-500 pointer-events-none group-hover:pointer-events-auto group-focus:pointer-events-auto p-4 pb-10">
+          <h3 class="text-2xl font-['Oswald'] font-bold text-orange-500 uppercase italic mb-3 drop-shadow-md border-b border-orange-500/50 pb-2 shrink-0">Polska</h3>
+          
+          <div class="relative w-full flex-1 overflow-hidden flex flex-col" style="-webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 75%); mask-image: linear-gradient(to bottom, black 75%, transparent 100%);">
+            <!-- Podskakująca ikona strzałki w górę -->
+            <div class="js-scroll-up absolute top-0 left-1/2 -translate-x-1/2 animate-bounce text-orange-500/50 pointer-events-none transition-opacity duration-300 opacity-0 z-40">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+              </svg>
+            </div>
+
+            <ul class="js-scroll-list flex flex-col gap-1.5 text-center w-full overflow-y-auto pb-16 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <li><a href="/trasy-rowerowe/dolnoslaskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Dolnośląskie</a></li>
+              <li><a href="/trasy-rowerowe/kujawsko-pomorskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Kujawsko-Pomorskie</a></li>
+              <li><a href="/trasy-rowerowe/lubelskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Lubelskie</a></li>
+              <li><a href="/trasy-rowerowe/lubuskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Lubuskie</a></li>
+              <li><a href="/trasy-rowerowe/lodzkie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Łódzkie</a></li>
+              <li><a href="/trasy-rowerowe/malopolskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Małopolskie</a></li>
+              <li><a href="/trasy-rowerowe/mazowieckie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Mazowieckie</a></li>
+              <li><a href="/trasy-rowerowe/opolskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Opolskie</a></li>
+              <li><a href="/trasy-rowerowe/podkarpackie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Podkarpackie</a></li>
+              <li><a href="/trasy-rowerowe/podlaskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Podlaskie</a></li>
+              <li><a href="/trasy-rowerowe/pomorskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Pomorskie</a></li>
+              <li><a href="/trasy-rowerowe/slaskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Śląskie</a></li>
+              <li><a href="/trasy-rowerowe/swietokrzyskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Świętokrzyskie</a></li>
+              <li><a href="/trasy-rowerowe/warminsko-mazurskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Warmińsko-Mazurskie</a></li>
+              <li><a href="/trasy-rowerowe/wielkopolskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Wielkopolskie</a></li>
+              <li><a href="/trasy-rowerowe/zachodniopomorskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Zachodniopomorskie</a></li>
+            </ul>
+          </div>
+
+          <!-- Podskakująca ikona strzałki w dół -->
+          <div class="js-scroll-down absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce text-orange-500/50 pointer-events-none transition-opacity duration-300 opacity-100 z-40">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Interaktywny kafelek Hiszpania -->
+      <div tabindex="0" class="js-interactive-tile group relative aspect-4/3 overflow-hidden shadow-sm hover:shadow-xl transition-all rounded-sm cursor-pointer focus:outline-none">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/80 group-focus:bg-black/80 transition-colors z-10 duration-500"></div>
+        <img src="https://images.unsplash.com/photo-1528629297340-d1d466945dc5?q=80&w=1822&auto=format&fit=crop" alt="Polska" class="w-full h-full object-cover group-hover:scale-110 group-hover:blur-sm group-focus:scale-110 group-focus:blur-sm transition-all duration-700" loading="lazy" />
+        
+        <!-- Widok domyślny (znika po najechaniu) -->
+        <div class="absolute bottom-0 left-0 p-6 z-20 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4 group-focus:opacity-0 group-focus:translate-y-4">
+          <h3 class="text-3xl font-['Oswald'] font-bold text-white uppercase italic drop-shadow-md">Hiszpania</h3>
+          <p class="text-slate-200 font-medium mt-1 drop-shadow">Wybierz obszar</p>
+        </div>
+
+        <!-- Lista województw (ukryta domyślnie, pojawia się na hover/focus) -->
+        <div class="absolute inset-0 z-30 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-500 pointer-events-none group-hover:pointer-events-auto group-focus:pointer-events-auto p-4 pb-10">
+          <h3 class="text-2xl font-['Oswald'] font-bold text-orange-500 uppercase italic mb-3 drop-shadow-md border-b border-orange-500/50 pb-2 shrink-0">Hiszpania</h3>
+          
+          <div class="relative w-full flex-1 overflow-hidden flex flex-col" style="-webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 75%); mask-image: linear-gradient(to bottom, black 75%, transparent 100%);">
+            <!-- Podskakująca ikona strzałki w górę -->
+            <div class="js-scroll-up absolute top-0 left-1/2 -translate-x-1/2 animate-bounce text-orange-500/50 pointer-events-none transition-opacity duration-300 opacity-0 z-40">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+              </svg>
+            </div>
+
+            <ul class="js-scroll-list flex flex-col gap-1.5 text-center w-full overflow-y-auto pb-16 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <li><a href="/trasy-rowerowe/dolnoslaskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Gran Canaria</a></li>
+              <li><a href="/trasy-rowerowe/kujawsko-pomorskie" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Fuerteventura</a></li>
+              
+            </ul>
+          </div>
+
+          <!-- Podskakująca ikona strzałki w dół -->
+          <div class="js-scroll-down absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce text-orange-500/50 pointer-events-none transition-opacity duration-300 opacity-100 z-40">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interaktywny kafelek Grecja -->
+      <div tabindex="0" class="js-interactive-tile group relative aspect-4/3 overflow-hidden shadow-sm hover:shadow-xl transition-all rounded-sm cursor-pointer focus:outline-none">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/80 group-focus:bg-black/80 transition-colors z-10 duration-500"></div>
+        <img src="https://images.unsplash.com/photo-1528629297340-d1d466945dc5?q=80&w=1822&auto=format&fit=crop" alt="Polska" class="w-full h-full object-cover group-hover:scale-110 group-hover:blur-sm group-focus:scale-110 group-focus:blur-sm transition-all duration-700" loading="lazy" />
+        
+        <!-- Widok domyślny (znika po najechaniu) -->
+        <div class="absolute bottom-0 left-0 p-6 z-20 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4 group-focus:opacity-0 group-focus:translate-y-4">
+          <h3 class="text-3xl font-['Oswald'] font-bold text-white uppercase italic drop-shadow-md">Grecja</h3>
+          <p class="text-slate-200 font-medium mt-1 drop-shadow">Wybierz obszar</p>
+        </div>
+
+        <!-- Lista województw (ukryta domyślnie, pojawia się na hover/focus) -->
+        <div class="absolute inset-0 z-30 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-500 pointer-events-none group-hover:pointer-events-auto group-focus:pointer-events-auto p-4 pb-10">
+          <h3 class="text-2xl font-['Oswald'] font-bold text-orange-500 uppercase italic mb-3 drop-shadow-md border-b border-orange-500/50 pb-2 shrink-0">Grecja</h3>
+          
+          <div class="relative w-full flex-1 overflow-hidden flex flex-col" style="-webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 75%); mask-image: linear-gradient(to bottom, black 75%, transparent 100%);">
+            <!-- Podskakująca ikona strzałki w górę -->
+            <div class="js-scroll-up absolute top-0 left-1/2 -translate-x-1/2 animate-bounce text-orange-500/50 pointer-events-none transition-opacity duration-300 opacity-0 z-40">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+              </svg>
+            </div>
+
+            <ul class="js-scroll-list flex flex-col gap-1.5 text-center w-full overflow-y-auto pb-16 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <li><a href="/trasy-rowerowe/grecja/rodos" class="block w-full text-slate-100 font-medium hover:text-orange-400  py-1.5 rounded transition-colors">Rodos</a></li>
+              
+            </ul>
+          </div>
+
+          <!-- Podskakująca ikona strzałki w dół -->
+          <div class="js-scroll-down absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce text-orange-500/50 pointer-events-none transition-opacity duration-300 opacity-100 z-40">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+    <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-8 text-balance transition-colors mt-8">
+      <span class="text-orange-500">Ostatnio dodane</span> 
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {trips.map(trip => (
+        <div class="js-trip-card contents" data-search-text={`${trip.data.title} ${trip.data.description}`.toLowerCase()}>
+          <TripCard trip={trip} />
+        </div>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const tiles = document.querySelectorAll('.js-interactive-tile');
+
+  tiles.forEach(tile => {
+    const list = tile.querySelector('.js-scroll-list');
+    const upArrow = tile.querySelector('.js-scroll-up');
+    const downArrow = tile.querySelector('.js-scroll-down');
+
+    if (list && upArrow && downArrow) {
+      const updateArrows = () => {
+        // Jeśli ekran jest duży i cała lista się mieści bez scrollowania, ukrywamy obie strzałki
+        const isScrollable = list.scrollHeight > list.clientHeight;
+        if (!isScrollable) {
+          upArrow.classList.remove('opacity-100');
+          upArrow.classList.add('opacity-0');
+          downArrow.classList.remove('opacity-100');
+          downArrow.classList.add('opacity-0');
+          return;
+        }
+
+        // Margines błędu w pikselach dla zaokrągleń
+        const isAtTop = list.scrollTop <= 2;
+        const isAtBottom = Math.ceil(list.scrollTop + list.clientHeight) >= list.scrollHeight - 2;
+
+        if (isAtTop) {
+          upArrow.classList.remove('opacity-100');
+          upArrow.classList.add('opacity-0');
+        } else {
+          upArrow.classList.remove('opacity-0');
+          upArrow.classList.add('opacity-100');
+        }
+
+        if (isAtBottom) {
+          downArrow.classList.remove('opacity-100');
+          downArrow.classList.add('opacity-0');
+        } else {
+          downArrow.classList.remove('opacity-0');
+          downArrow.classList.add('opacity-100');
+        }
+      };
+
+      list.addEventListener('scroll', updateArrows);
+      window.addEventListener('resize', updateArrows);
+      
+      // Aktualizujemy po załadowaniu (lekkie opóźnienie gwarantuje poprawne obliczenie wysokości po zrenderowaniu CSS)
+      setTimeout(updateArrows, 150);
+
+      // Przypinamy funkcję do kafelka, by móc ją wywołać po filtrowaniu
+      tile._updateArrows = updateArrows;
+    }
+  });
+
+  // Logika wyszukiwarki
+  const searchInput = document.getElementById('location-search');
+  const tripCards = document.querySelectorAll('.js-trip-card');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+
+      tiles.forEach(tile => {
+        const titleEl = tile.querySelector('h3');
+        const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+        const listItems = tile.querySelectorAll('.js-scroll-list li');
+        
+        let tileHasMatch = title.includes(query);
+        let hasMatchingLi = false;
+
+        listItems.forEach(li => {
+          const liText = li.textContent.toLowerCase();
+          // Pokaż element li jeśli pasuje cały kafelek lub sam element
+          if (query === '' || tileHasMatch || liText.includes(query)) {
+            li.style.display = '';
+            if (liText.includes(query)) hasMatchingLi = true;
+          } else {
+            li.style.display = 'none';
+          }
+        });
+
+        // Pokaż kafelek jeśli pasuje tytuł lub którykolwiek element wewnątrz
+        if (query === '' || tileHasMatch || hasMatchingLi) {
+          tile.style.display = '';
+          // Odświeżenie animacji strzałek (wysokość listy mogła się zmienić)
+          if (tile._updateArrows) setTimeout(tile._updateArrows, 50);
+        } else {
+          tile.style.display = 'none';
+        }
+      });
+
+      tripCards.forEach(card => {
+        const cardText = card.dataset.searchText || '';
+        const hasMatch = cardText.includes(query);
+        card.style.display = hasMatch ? '' : 'none';
+      });
+    });
+  }
+
+  // Logika filtrów Quick-Access
+  const filterBtns = document.querySelectorAll('.js-filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filterValue = btn.getAttribute('data-filter') || '';
+      
+      if (searchInput) {
+        searchInput.value = filterValue;
+        // Odpalamy event 'input' sztucznie, aby uruchomić główny kod wyszukiwarki
+        searchInput.dispatchEvent(new Event('input'));
+      }
+
+      // Aktualizacja stylów przycisków na zaznaczony/niezaznaczony
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-orange-500', 'text-white', 'hover:bg-orange-600', 'border-orange-500');
+        b.classList.add('bg-white', 'dark:bg-[#0f0f12]', 'text-slate-700', 'dark:text-slate-300', 'border-slate-200', 'dark:border-white/5');
+      });
+      btn.classList.add('bg-orange-500', 'text-white', 'hover:bg-orange-600', 'border-orange-500');
+      btn.classList.remove('bg-white', 'dark:bg-[#0f0f12]', 'text-slate-700', 'dark:text-slate-300', 'border-slate-200', 'dark:border-white/5');
+    });
+  });
+</script>

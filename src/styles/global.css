@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  html {
+    @apply antialiased text-slate-900 bg-slate-50;
+  }
+}
+
+@theme {
+  --color-strava: #fc4c02;
+  --color-strava-hover: #cc4200;
+  --color-main-orange-500: #fc6100;
+  --color-coffee-bean-900: #191a1e;
+  --color-coffee-bean-700: #535353;
+  --color-coffee-bean-500: #a56f49;
+  --color-tiger-orange-500: #e57d28;
+  --color-eggshell-500: #eee8df;
+}

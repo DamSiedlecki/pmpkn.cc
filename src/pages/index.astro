@@ -1,11 +1,174 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/BaseLayout.astro';
+import BlogCard from '../components/BlogCard.astro';
+import BlogCardSquare from '../components/BlogCardSquare.astro';
+import TripCard from '../components/TripCard.astro';
+import StravaCard from '../components/StravaCard.astro';
+import { Image } from 'astro:assets';
+import heroBg from '../assets/img/hero-bg.jpg';
+import jouiUs from '../assets/img/hero-bg.jpg';
+import { getLatestActivities } from '../utils/strava.ts';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+
+const posts = (await getCollection('blog', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+})).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const trips = (await getCollection('trip', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+})).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const stravaActivities = await getLatestActivities(3);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="PMPKN">  
+  <section class="relative min-h-[80vh] overflow-hidden bg-slate-100 pt-20  text-slate-900 transition-colors duration-300 dark:bg-[#0a0a0c] dark:text-white">
+  <div
+    class="absolute inset-0 z-0 bg-cover bg-center opacity-90 dark:opacity-50 bg-fixed"
+    style={`background-image: url('${heroBg.src}')`}
+    aria-hidden="true"
+  ></div>
+
+  <div class="absolute inset-0 z-0 bg-black/30" aria-hidden="true"></div>
+
+  <div
+    class="absolute inset-0 z-0 opacity-20"
+    style="background-image: radial-gradient(#2a2a2d 1px, transparent 1px); background-size: 40px 40px;"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-12 min-h-[90vh]">
+    <div class="text-center lg:col-span-7 lg:text-left">
+      <!--<div class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-500/20 bg-orange-500/10 px-4 py-1.5">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-orange-500"></span>
+        </span>
+         <span class="text-xs font-black uppercase tracking-widest text-orange-500">
+          <a href="#" class="hover:text-orange-600 transition">Nowość! Dołącz do naszej społeczności rowerowej.</a>
+        </span>
+      </div>
+ -->
+      <h1 class="mb-8 font-['Oswald'] text-7xl font-bold leading-[0.85] tracking-tighter uppercase  md:text-9xl ">
+        pmpkn <br />
+        <span class="not-italic text-white dark:text-slate-400">on</span><span class=" text-orange-500">bike</span>
+      </h1>
+
+      <p class="mx-auto mb-10 max-w-xl text-lg font-light leading-relaxed text-slate-100 dark:text-slate-300 lg:mx-0 text-justify">
+        Jeśli szukasz tras, rowerowych przemyśleń amatora - jesteś w dobrym miejscu. Zapraszam do lektury i wspólnej jazdy!
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4 lg:justify-start">
+        <a
+          href="/trasy-rowerowe"
+          class="translate-y-0 bg-orange-600 px-10 py-5 font-black uppercase tracking-tighter text-white shadow-[8px_8px_0_0_rgba(255,255,255,0.1)] transition-all hover:-translate-y-1 hover:bg-orange-500 rounded-sm italic"
+        >
+          Trasy
+        </a>
+
+        <a
+          href="/blog"
+          class="group flex items-center gap-3 text-sm font-bold uppercase tracking-widest transition text-slate-100 hover:text-orange-500" 
+        >
+          <span class="h-px w-8 bg-orange-500 transition-all  group-hover:w-12"></span>
+          Blog
+        </a>
+      </div>
+    </div>
+
+    <div class="relative group lg:col-span-5">
+      <div class="absolute -inset-4 rounded-full bg-orange-600/20 blur-[100px] transition-all duration-700 group-hover:bg-orange-600/40"></div>
+
+      <!-- <div class="relative z-10 border-l-4 border-orange-500 pl-4 py-2">
+        <img
+          src="/images/hero-bike.jpg"
+          alt="Kolarz w akcji"
+          width="800"
+          height="1000"
+          class="rounded-sm grayscale shadow-2xl transition-all duration-700 hover:grayscale-0"
+        />
+
+        <div class="absolute -right-4 bottom-4 bg-orange-600 p-4 font-['Oswald'] text-2xl font-bold italic text-white">
+          #RIDEFAST
+        </div>
+      </div> -->
+    </div>
+  </div>
+</section>
+
+<section class="bg-white dark:bg-[#0f0f12] py-32 border-t border-slate-200 dark:border-white/5 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
+        <div>
+          <h2 class="text-5xl font-['Oswald'] font-bold uppercase text-slate-900 dark:text-white italic transition-colors">Ostatnie <span class="text-orange-500">trasy</span></h2>
+          <a href="/trasy-rowerowe" class="group flex items-center gap-3 text-slate-900 dark:text-white  uppercase tracking-widest text-sm hover:text-orange-500 transition">
+            <span class="h-[1px] w-8 bg-orange-500 group-hover:w-12 transition-all"></span>
+            Wszystkie trasy
+          </a>
+          <div class="h-1 w-24 bg-orange-600 mt-2"></div>
+        </div>
+        <p class="text-slate-600 dark:text-slate-500 max-w-xs text-sm transition-colors text-justify">Ostatnio przejechane trasy. A przynajmniej te, które udało mi się opisać :)</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {trips.slice(0, 3).map(trip => <TripCard trip={trip} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 dark:bg-[#0a0a0c] py-24 border-t border-slate-200 dark:border-white/5 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div>
+          <h2 class="text-4xl font-['Oswald'] font-bold uppercase text-slate-900 dark:text-white italic transition-colors"><span class="text-[#FC4C02]">Strava</span> - na bieżąco</h2>
+          <div class="h-1 w-24 bg-[#FC4C02] mt-2"></div>
+        </div>
+        <a href="https://www.strava.com/" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-3 text-slate-900 dark:text-white uppercase tracking-widest text-sm hover:text-[#FC4C02] transition">
+          <span class="h-[1px] w-8 bg-[#FC4C02] group-hover:w-12 transition-all"></span>
+          Mój profil na Strava
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {stravaActivities && stravaActivities.length > 0 ? (
+          stravaActivities.map((activity: any) => <StravaCard activity={activity} />)
+        ) : (
+          <p class="text-slate-500">Brak ostatnich aktywności ze Stravy lub problem z połączeniem.</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white dark:bg-[#0f0f12] py-32 border-t border-slate-200 dark:border-white/5 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
+        <div>
+          <h2 class="text-5xl font-['Oswald'] font-bold uppercase text-slate-900 dark:text-white italic transition-colors">Ostatnie <span class="text-orange-500">Wpisy</span></h2>
+          <a href="/blog" class="group flex items-center gap-3 text-slate-900 dark:text-white  uppercase tracking-widest text-sm hover:text-orange-500 transition">
+            <span class="h-[1px] w-8 bg-orange-500 group-hover:w-12 transition-all"></span>
+            Przeglądaj blog
+          </a>
+          <div class="h-1 w-24 bg-orange-600 mt-2"></div>
+        </div>
+        <p class="text-slate-600 dark:text-slate-500 max-w-xs text-sm transition-colors">Najświeższe testy, relacje i nowinki technologiczne ze świata dwóch kółek.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {posts.slice(0, 3).map(post => <BlogCard post={post} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="relative py-48 overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center opacity-90 dark:opacity-50 bg-fixed"
+    style={`background-image: url('${jouiUs.src}')`}>
+      
+    </div>
+    
+    <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-6xl md:text-8xl font-['Oswald'] font-bold text-white uppercase italic mb-8"><span class=" text-slate-900">Ustawka?</span> Coffee ride?<br /> <span class=" text-orange-500">Nowa trasa?</span></h2>
+      <button class="bg-white text-black px-12 py-5 font-black uppercase tracking-tighter hover:bg-orange-500 hover:text-white transition-colors transform -skew-x-12 cursor-pointer hover:scale-105 ">
+        Napisz i jedziemy!
+      </button>
+    </div>
+  </section>
 </Layout>

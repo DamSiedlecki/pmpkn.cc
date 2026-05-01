@@ -1,0 +1,52 @@
+---
+const { activity } = Astro.props;
+
+// Przeliczenia danych z API Stravy na czytelne wartości
+const distanceKm = (activity.distance / 1000).toFixed(2);
+const elevation = Math.round(activity.total_elevation_gain);
+
+// Czas trwania (z sekund na godziny i minuty)
+const hours = Math.floor(activity.moving_time / 3600);
+const minutes = Math.floor((activity.moving_time % 3600) / 60);
+const formattedTime = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+
+// Średnia prędkość (z metrów/sekundę na km/h)
+const avgSpeed = (activity.average_speed * 3.6).toFixed(1);
+
+// Data polska
+const date = activity.start_date_local 
+  ? new Date(activity.start_date_local).toLocaleDateString('pl-PL', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }) 
+  : '';
+---
+
+<div class="group relative bg-white dark:bg-[#16161a] border border-slate-200 dark:border-white/5 shadow-sm hover:shadow-xl hover:border-[#FC4C02]/50 transition-all duration-300 rounded-sm p-6 overflow-hidden flex flex-col justify-between h-full">
+  <div class="absolute top-0 right-0 w-32 h-32 bg-[#FC4C02]/5 rounded-bl-[100px] -z-10 group-hover:bg-[#FC4C02]/10 transition-colors duration-500"></div>
+  
+  <div>
+    <div class="flex justify-between items-start mb-6 gap-4">
+      <div>
+        <p class="text-xs font-bold text-[#FC4C02] uppercase tracking-widest mb-1">{date}</p>
+        <h3 class="text-xl font-['Oswald'] font-bold text-slate-900 dark:text-white uppercase italic leading-tight">
+          <a href={`https://www.strava.com/activities/${activity.id}`} target="_blank" rel="noopener noreferrer nofollow" class="hover:text-[#FC4C02] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FC4C02] rounded-sm">
+            <span class="absolute inset-0"></span>
+            {activity.name}
+          </a>
+        </h3>
+      </div>
+      <div class="text-[#FC4C02] font-black italic tracking-tighter shrink-0 bg-[#FC4C02]/10 px-2 py-1 text-xs rounded-sm">
+        STRAVA
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-y-6 gap-x-4 mt-auto">
+      <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Dystans</span><span class="text-2xl font-black text-slate-800 dark:text-slate-200">{distanceKm} <span class="text-sm font-medium text-slate-500">km</span></span></div>
+      <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Pion</span><span class="text-2xl font-black text-slate-800 dark:text-slate-200">{elevation} <span class="text-sm font-medium text-slate-500">m</span></span></div>
+      <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Czas jazdy</span><span class="text-xl font-bold text-slate-700 dark:text-slate-300">{formattedTime}</span></div>
+      <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Śr. prędkość</span><span class="text-xl font-bold text-slate-700 dark:text-slate-300">{avgSpeed} <span class="text-sm font-medium text-slate-500">km/h</span></span></div>
+    </div>
+  </div>
+</div>

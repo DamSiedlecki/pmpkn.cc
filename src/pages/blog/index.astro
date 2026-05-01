@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+const posts = (await getCollection('blog', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+})).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog Rowerowy - Najnowsze wpisy">
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <header class="mb-12">
+      <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-4 text-balance transition-colors">
+        <span class="text-orange-500">PMPKN</span>owy blog Rowerowy 
+      </h1>
+      <p class="text-lg text-slate-600 dark:text-slate-400 transition-colors">Odkryj najnowsze poradniki i relacje z tras.</p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {posts.map(post => <BlogCard post={post} />)}
+    </div>
+  </main>
+</BaseLayout>

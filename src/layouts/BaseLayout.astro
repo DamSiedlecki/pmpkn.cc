@@ -1,0 +1,85 @@
+---
+import MainNav from '../components/MainNav.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "VeloAstro - Twoja dawka rowerowej pasji" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pl" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} | PMPKN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <script is:inline>
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-[#0a0a0c] dark:text-slate-100 flex flex-col min-h-screen font-['Poppins'] overflow-x-hidden transition-colors duration-300">
+    
+    <MainNav />
+
+    <div class="grow">
+      <slot />
+    </div>
+
+    <Footer />
+
+    <script>
+      var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+      var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+      // Na starcie ustaw odpowiednią ikonkę na przycisku
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          themeToggleLightIcon?.classList.remove('hidden');
+      } else {
+          themeToggleDarkIcon?.classList.remove('hidden');
+      }
+
+      var themeToggleBtn = document.getElementById('theme-toggle');
+      themeToggleBtn?.addEventListener('click', function() {
+          // Zamień ikonki
+          themeToggleDarkIcon?.classList.toggle('hidden');
+          themeToggleLightIcon?.classList.toggle('hidden');
+
+          // Zmień klasy i zapisz wybór użytkownika
+          if (document.documentElement.classList.contains('dark')) {
+              document.documentElement.classList.remove('dark');
+              localStorage.setItem('theme', 'light');
+          } else {
+              document.documentElement.classList.add('dark');
+              localStorage.setItem('theme', 'dark');
+          }
+      });
+
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuOpenIcon = document.getElementById('menu-open-icon');
+      const menuCloseIcon = document.getElementById('menu-close-icon');
+
+      mobileMenuButton?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+        menuOpenIcon?.classList.toggle('hidden');
+        menuCloseIcon?.classList.toggle('hidden');
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+        mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+---
+import { getEntry, type CollectionEntry } from 'astro:content';
+import { Mountain, Route } from "lucide-react";
+
+
+interface Props {
+  localization: CollectionEntry<'localization'>;
+}
+
+const { localization } = Astro.props;
+---
+
+<article class="group bg-white dark:bg-[#0f0f12]  overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-800">
+  <div class="relative aspect-video overflow-hidden group">
+  {localization.data.image && (
+    <img 
+      src={localization.data.image} 
+      alt={localization.data.title}
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+    />
+  )}
+
+  <div class="absolute inset-0 p-4 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent text-white">
+  <div class="absolute top-2 right-2 flex flex-col gap-1">
+    {localization.data.gpx && (
+      <span class="bg-main-orange-500 p-1 text-center rounded text-xs font-bold uppercase">gpx</span>
+    )}    
+  </div>
+
+  <div class="flex gap-3 text-sm font-medium">
+    <span class="flex items-center gap-1">
+      <Mountain className="w-5 h-5" />
+      1234m
+    </span>
+    <span class="flex items-center gap-1">
+      <Route className="w-5 h-5" />
+      123,42km
+    </span>
+  </div>
+</div>
+</div>
+  
+  <div class="p-5">
+    
+    
+    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 transition-colors">
+      <a href={`/trasy/${localization.id}`} class="hover:text-orange-600 transition-colors">
+        {localization.data.title}
+      </a>
+    </h3>
+    
+    <p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2 mb-4 transition-colors">
+      {localization.data.description}
+    </p>
+    
+    <time class="text-xs text-slate-400">
+      {localization.data.pubDate.toLocaleDateString('pl-PL', { dateStyle: 'long' })}
+    </time>
+    
+  <div class="author-info">
+    <p class="font-bold text-slate-900 dark:text-white">
+      {author?.data.name || "Nieznany autor"}
+    </p>
+    
+  </div>
+  </div>
+</article>

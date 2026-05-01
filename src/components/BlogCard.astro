@@ -1,0 +1,53 @@
+---
+import { getEntry, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const author = await getEntry(post.data.author);
+---
+
+<article class="group bg-white dark:bg-[#0f0f12] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-800">
+  <div class="aspect-video overflow-hidden">
+    {post.data.image && (
+      <img 
+        src={post.data.image} 
+        alt={post.data.title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      />
+    )}
+  </div>
+  
+  <div class="p-5">
+    <div class="flex gap-2 mb-3">
+      {post.data.tags?.map(tag => (
+        <span class="text-xs font-medium px-2 py-1 bg-orange-100 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 rounded-full">
+          #{tag}
+        </span>
+      ))}
+    </div>
+    
+    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 transition-colors">
+      <a href={`/blog/${post.id}`} class="hover:text-orange-600 transition-colors">
+        {post.data.title}
+      </a>
+    </h3>
+    
+    <p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2 mb-4 transition-colors">
+      {post.data.description}
+    </p>
+    
+    <time class="text-xs text-slate-400">
+      {post.data.pubDate.toLocaleDateString('pl-PL', { dateStyle: 'long' })}
+    </time>
+    
+  <div class="author-info">
+    <p class="font-bold text-slate-900 dark:text-white">
+      {author.data.name || "Nieznany autor"}
+    </p>
+    
+  </div>
+  </div>
+</article>
