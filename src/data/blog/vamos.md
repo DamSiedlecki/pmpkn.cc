@@ -18,7 +18,7 @@ Pierwsze szlify zbierałem jeszcze jako małolat u śp. Henryka Kosiorka, trener
 
 Potem rower odszedł w kąt na długie lata. **Wróciłem do niego w pandemii** - jak pewnie połowa Polski. Kupiłem MTB, które było za małe, za to bardzo tanie i na noname'owym osprzęcie. Deal życia. W 2023 przesiadłem się na Krossa Eskera 2.0 na microshiftcie - też minimalnie za małego, ale przejeździłem na nim do końca 2025 roku, bez żalu. Na przełomie roku przyszedł czas na zmianę: teraz jeżdżę na -wreszcie dopasowanym- all-roadzie od Felta.
 
-Liczę FTP, śledzę dane z treningu i staram się rozwijać świadomie - **ciągle jako amator, ale z zacieciem sportowym**. Nie ścigam się zawodowo, ale lubię wiedzieć, co robię i dlaczego.
+Liczę FTP, śledzę dane z treningu i staram się rozwijać świadomie - **ciągle jako amator, ale z zacięciem sportowym**. Nie ścigam się zawodowo, ale lubię wiedzieć, co robię i dlaczego.
 
 ## O czym będzie ten blog rowerowy?
 
