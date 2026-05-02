@@ -38,14 +38,15 @@ const date = activity.start_date_local
         </h3>
       </div>
       <div class="text-[#FC4C02] font-black italic tracking-tighter shrink-0 bg-[#FC4C02]/10 px-2 py-1 text-xs rounded-sm">
-        STRAVA
+        {activity.type}
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-y-6 gap-x-4 mt-auto">
+      
       <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Dystans</span><span class="text-2xl font-black text-slate-800 dark:text-slate-200">{distanceKm} <span class="text-sm font-medium text-slate-500">km</span></span></div>
       <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Pion</span><span class="text-2xl font-black text-slate-800 dark:text-slate-200">{elevation} <span class="text-sm font-medium text-slate-500">m</span></span></div>
-      <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Czas jazdy</span><span class="text-xl font-bold text-slate-700 dark:text-slate-300">{formattedTime}</span></div>
+      <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Czas</span><span class="text-xl font-bold text-slate-700 dark:text-slate-300">{formattedTime}</span></div>
       <div class="flex flex-col"><span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Śr. prędkość</span><span class="text-xl font-bold text-slate-700 dark:text-slate-300">{avgSpeed} <span class="text-sm font-medium text-slate-500">km/h</span></span></div>
     </div>
   </div>

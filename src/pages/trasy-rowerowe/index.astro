@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TripCard from '../../components/TripCard.astro';
 
+import { Image } from 'astro:assets';
+import polandSrc from '../../assets/img/regions/trasy-rowerowe-w-polsce.png'; 
+
 const trips = (await getCollection('trip', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
 })).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -51,8 +54,8 @@ const trips = (await getCollection('trip', ({ data }) => {
       <!-- Interaktywny kafelek Polska -->
       <div tabindex="0" class="js-interactive-tile group relative aspect-4/3 overflow-hidden shadow-sm hover:shadow-xl transition-all rounded-sm cursor-pointer focus:outline-none">
         <div class="absolute inset-0 bg-black/40 group-hover:bg-black/80 group-focus:bg-black/80 transition-colors z-10 duration-500"></div>
-        <img src="https://images.unsplash.com/photo-1528629297340-d1d466945dc5?q=80&w=1822&auto=format&fit=crop" alt="Polska" class="w-full h-full object-cover group-hover:scale-110 group-hover:blur-sm group-focus:scale-110 group-focus:blur-sm transition-all duration-700" loading="lazy" />
-        
+        <!-- <img src="https://images.unsplash.com/photo-1528629297340-d1d466945dc5?q=80&w=1822&auto=format&fit=crop" alt="Polska" class="w-full h-full object-cover group-hover:scale-110 group-hover:blur-sm group-focus:scale-110 group-focus:blur-sm transition-all duration-700" loading="lazy" /> -->
+        <Image src={polandSrc} alt="Polska" class="w-full h-full object-cover group-hover:scale-110 group-hover:blur-sm group-focus:scale-110 group-focus:blur-sm transition-all duration-700" loading="lazy" />
         <!-- Widok domyślny (znika po najechaniu) -->
         <div class="absolute bottom-0 left-0 p-6 z-20 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4 group-focus:opacity-0 group-focus:translate-y-4">
           <h3 class="text-3xl font-['Oswald'] font-bold text-white uppercase italic drop-shadow-md">Polska</h3>

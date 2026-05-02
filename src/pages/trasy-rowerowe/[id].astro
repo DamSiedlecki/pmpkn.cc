@@ -1,7 +1,7 @@
 ---
 // src/pages/blog/[id].astro
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import TripLayout from '../../layouts/TripLayout.astro';
 import { Image } from 'astro:assets';
 
 // 1. Generujemy ścieżki na podstawie ID plików
@@ -21,7 +21,8 @@ const author = trip.data.author ? await getEntry(trip.data.author) : null;
 const authorImage = author?.data.avatar;
 ---
 
-<BaseLayout metatitle={trip.data.title} metadescription={trip.data.description}>
+<TripLayout title={trip.data.title} description={trip.data.description} image={imageSrc?.src} pubDate={trip.data.pubDate} updatedDate={trip.data.updatedDate} stravaUrl={trip.data.stravaUrl} garminUrl={trip.data.garminUrl} gpx={trip.data.gpx} author={trip.data.author}>
+  <article class="max-w-6xl mx-auto px-4 py-16">
   <article class="max-w-6xl mx-auto px-4 py-16">
     <header class="mb-8">
        {imageSrc && <Image src={imageSrc} width={1920} height={1080} alt={trip.data.title} class="w-full h-64 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform duration-300" />}
@@ -45,4 +46,4 @@ const authorImage = author?.data.avatar;
     
   </div>
   </article>
-</BaseLayout>
+</TripLayout>

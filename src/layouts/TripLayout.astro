@@ -5,42 +5,67 @@ import { SEO } from "astro-seo";
 import '../styles/global.css';
 
 interface Props {
-  metatitle: string;
-  metadescription?: string;
+  title: string;
+  description: string;
   image?: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  stravaUrl?: string;
+  garminUrl?: string;
+  gpx?: boolean;
+  author?: string;
 }
 
-const { metatitle , metadescription = "Trasy rowerowe w Polsce i nie tylko! Artykuły i poradniki rowerowe. Blog - kolarstwo okiem ambitnego amatora. Zapraszam do lektury ", image = "https://pmpkn.cc/og-image.jpg" } = Astro.props;
+const { 
+  title, 
+  description, 
+  image = "https://pmpkn.cc/og-image.jpg",
+  pubDate,
+  updatedDate,
+  stravaUrl,
+  garminUrl,
+  gpx = false,
+  author = "Pumpkin"
+} = Astro.props;
+
+const publishedTime = pubDate.toISOString();
+const modifiedTime = updatedDate?.toISOString();
 ---
 
 <!doctype html>
 <html lang="pl" class="scroll-smooth">
   <head>
     <SEO
-      title={metatitle}
+      title={title}
       titleTemplate="%s | 🚴PMPKN🎃"
-      description={metadescription}
+      description={description}
       canonical={Astro.url.href}
       openGraph={{
         basic: {
-          title: metatitle,
-          type: "website",
+          title: title,
+          type: "article",
           image: image,
           url: Astro.url.href,
         },
         optional: {
-          siteName: "PMPKN on Bike",
+          siteName: "PMPKN on Bike - Trasy rowerowe",
           locale: "pl_PL",
-          description: metadescription,
+          description: description,
+        },
+        article: {
+          publishedTime: publishedTime,
+          modifiedTime: modifiedTime,
+          authors: [author],
+          section: "Trasy rowerowe",
         }
       }}
       twitter={{
         creator: "@pmpkn_cc",
         card: "summary_large_image",
-        title: metatitle,
-        description: metadescription,
+        title: title,
+        description: description,
         image: image,
-        imageAlt: metatitle,
+        imageAlt: title,
       }}
       extend={{
         link: [
@@ -83,33 +108,24 @@ const { metatitle , metadescription = "Trasy rowerowe w Polsce i nie tylko! Arty
           themeToggleDarkIcon?.classList.remove('hidden');
       }
 
-      var themeToggleBtn = document.getElementById('theme-toggle');
-      themeToggleBtn?.addEventListener('click', function() {
-          // Zamień ikonki
+      // Dodaj event listener do przycisku toggle
+      document.getElementById('theme-toggle')?.addEventListener('click', function() {
           themeToggleDarkIcon?.classList.toggle('hidden');
           themeToggleLightIcon?.classList.toggle('hidden');
 
-          // Zmień klasy i zapisz wybór użytkownika
-          if (document.documentElement.classList.contains('dark')) {
-              document.documentElement.classList.remove('dark');
-              localStorage.setItem('theme', 'light');
+          if (localStorage.getItem('theme')) {
+              if (localStorage.getItem('theme') == 'light') {
+                  localStorage.setItem('theme', 'dark');
+              } else {
+                  localStorage.setItem('theme', 'light');
+              }
           } else {
-              document.documentElement.classList.add('dark');
-              localStorage.setItem('theme', 'dark');
+              if (document.documentElement.classList.contains('dark')) {
+                  localStorage.setItem('theme', 'light');
+              } else {
+                  localStorage.setItem('theme', 'dark');
+              }
           }
-      });
-
-      const mobileMenuButton = document.getElementById('mobile-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const menuOpenIcon = document.getElementById('menu-open-icon');
-      const menuCloseIcon = document.getElementById('menu-close-icon');
-
-      mobileMenuButton?.addEventListener('click', () => {
-        mobileMenu?.classList.toggle('hidden');
-        menuOpenIcon?.classList.toggle('hidden');
-        menuCloseIcon?.classList.toggle('hidden');
-        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
-        mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
       });
     </script>
   </body>

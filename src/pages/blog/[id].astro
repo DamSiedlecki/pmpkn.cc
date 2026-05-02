@@ -1,7 +1,7 @@
 ---
 // src/pages/blog/[id].astro
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import { Image } from 'astro:assets';
 
 // 1. Generujemy ścieżki na podstawie ID plików
@@ -21,7 +21,7 @@ const author = post.data.author ? await getEntry(post.data.author) : null;
 const authorImage = author?.data.avatar;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} metatitle={post.data.metatitle} metadescription={post.data.metadescription} ogImage={imageSrc}>
+<BlogLayout metatitle={post.data.metatitle} metadescription={post.data.metadescription} image={imageSrc?.src} pubDate={post.data.pubDate} updatedDate={post.data.updatedDate} category={post.data.category} tags={post.data.tags} author={post.data.author}>
   <article class="max-w-6xl mx-auto px-4 py-16">
     <header class="mb-8" >
        {imageSrc && <Image src={imageSrc} width={1920} height={1080} alt={post.data.title} class="w-full h-180 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform duration-300 bg-fixed" />}
@@ -45,4 +45,4 @@ const authorImage = author?.data.avatar;
     
   </div>
   </article>
-</BaseLayout>
+</BlogLayout>
