@@ -20,12 +20,12 @@ const trips = (await getCollection('trip', ({ data }) => {
 const stravaActivities = await getLatestActivities(3);
 ---
 
-<Layout title="Trasy rowerowe, porady i blog">  
+<Layout metatitle="Trasy rowerowe, porady i blog" metadescription="Trasy rowerowe w Polsce i nie tylko! Artykuły i poradniki rowerowe. Blog - kolarstwo okiem ambitnego amatora. Zapraszam do lektury ">  
   <section class="relative min-h-[80vh] overflow-hidden bg-slate-100 pt-20  text-slate-900 transition-colors duration-300 dark:bg-[#0a0a0c] dark:text-white">
   <div
     class="absolute inset-0 z-0 bg-cover bg-center opacity-90 dark:opacity-50 bg-fixed"
     style={`background-image: url('${heroBg.src}')`}
-    aria-hidden="true"
+    aria-hidden="true" fetchpriority="high"
   ></div>
 
   <div class="absolute inset-0 z-0 bg-black/30" aria-hidden="true"></div>

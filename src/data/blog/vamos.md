@@ -1,10 +1,10 @@
 ---
 title: "Vamos!"
 description: "No to zaczynamy. Strona stoi, wypada się więc przywitać."
-metatitle:
-metadescription: ""
+metatitle: "Vamos! Czyli witaj na pmpkn.cc"
+metadescription: "Cześć! Jestem Pumpkin, a to jest mój pierwszy wpis na blogu. 3 słowa o sobie i o tej stronie. Zapraszam!"
 pubDate: 2024-05-01
-author: damian-siedlecki
+author: pumpkin
 category: aktualności
 image: "../../assets/img/vamos.webp"
 draft: false
@@ -18,7 +18,7 @@ Pierwsze szlify zbierałem jeszcze jako małolat u śp. Henryka Kosiorka, trener
 
 Potem rower odszedł w kąt na długie lata. **Wróciłem do niego w pandemii** - jak pewnie połowa Polski. Kupiłem MTB, które było za małe, za to bardzo tanie i na noname'owym osprzęcie. Deal życia. W 2023 przesiadłem się na Krossa Eskera 2.0 na microshiftcie - też minimalnie za małego, ale przejeździłem na nim do końca 2025 roku, bez żalu. Na przełomie roku przyszedł czas na zmianę: teraz jeżdżę na -wreszcie dopasowanym- all-roadzie od Felta.
 
-Liczę FTP, śledzę dane z treningu i staram się rozwijać świadomie - **ciągle jako amator, ale z zacięciem sportowym**. Nie ścigam się zawodowo, ale lubię wiedzieć, co robię i dlaczego.
+Liczę FTP, śledzę dane z treningu i staram się rozwijać świadomie - **jako amator, ale z zacięciem sportowym**. Nie ścigam się zawodowo, ale lubię wiedzieć, co robię i dlaczego.
 
 ## O czym będzie ten blog rowerowy?
 
@@ -28,6 +28,6 @@ Ten **blog rowerowy** ma być uczciwy. Jeśli coś mi nie wychodzi - napiszę. J
 
 ## Dlaczego pmpkn.cc?
 
-Domena - niespodzianka! Pumpkin bez samogłosek - bo mnie tak, ale też dlatego, że nie chciałem kolejnego _blog-rowerowy-coś-tam.pl_. To moje miejsce, więc ma wyglądać jak moje.
+Domena - niespodzianka(!) - Pumpkin bez samogłosek - poprostu bo tak, ale też dlatego, że nie chciałem kolejnego _blog-rowerowy-coś-tam.pl_. To moje miejsce, więc mogę. A **.cc**? nie bierzmy wszystkiego na poważnie ;)
 
-Jeśli też jeździsz - dobrze trafiłeś/aś.
+Jeśli też jeździsz - dobrze trafił_ś, śmiało <a href="https://www.strava.com/athletes/pmpkn" target="_blank" rel="noopener noreferrer nofollow">złap mnie na Stravie</a> i dawaj na rundę!

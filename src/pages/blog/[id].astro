@@ -21,10 +21,10 @@ const author = post.data.author ? await getEntry(post.data.author) : null;
 const authorImage = author?.data.avatar;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} metatitle={post.data.metatitle} metadescription={post.data.metadescription} ogImage={imageSrc}>
   <article class="max-w-6xl mx-auto px-4 py-16">
-    <header class="mb-8">
-       {imageSrc && <Image src={imageSrc} width={1920} height={1080} alt={post.data.title} class="w-full h-64 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform duration-300" />}
+    <header class="mb-8" >
+       {imageSrc && <Image src={imageSrc} width={1920} height={1080} alt={post.data.title} class="w-full h-180 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform duration-300 bg-fixed" />}
       <span class="text-orange-600 font-bold uppercase text-sm tracking-widest">{post.data.category}</span>
       <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mt-2 mb-4 leading-tight transition-colors">
         {post.data.title}
@@ -37,7 +37,7 @@ const authorImage = author?.data.avatar;
     <div class="prose prose-slate dark:prose-invert lg:prose-xl prose-orange max-w-none transition-colors prose-h2:text-4xl prose-h2:font-black prose-h2:text-slate-900 dark:prose-h2:text-white prose-h2:text-balance prose-h2:transition-colors prose-h3:text-3xl prose-h3:font-['Oswald'] prose-h3:font-bold prose-h3:text-white prose-h3:uppercase prose-h3:italic prose-h3:drop-shadow-md prose-p:text-justify">
       <Content />
     </div>
-    <div class="author-info">
+    <div class="author-info py-5">
     <p class="font-bold text-slate-900 dark:text-white">
       {authorImage && <Image src={authorImage} width={64} height={64} alt={author?.data.name || "Awatar"} class="w-16 h-16 rounded-full mr-3 inline-block object-cover" />}
       {author?.data.name || "Nieznany autor"}

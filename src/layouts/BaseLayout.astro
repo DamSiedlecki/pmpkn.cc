@@ -4,11 +4,11 @@ import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
 interface Props {
-  title: string;
-  description?: string;
+  metatitle: string;
+  metadescription?: string;
 }
 
-const { title, description = "Trasy rowerowe w Polsce i nie tylko! Artykuły i poradniki rowerowe. Blog - kolarstwo okiem ambitnego amatora. Zapraszam do lektury " } = Astro.props;
+const { metatitle , metadescription = "Trasy rowerowe w Polsce i nie tylko! Artykuły i poradniki rowerowe. Blog - kolarstwo okiem ambitnego amatora. Zapraszam do lektury " } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,9 +17,9 @@ const { title, description = "Trasy rowerowe w Polsce i nie tylko! Artykuły i p
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="description" content={description} />
+    <meta name="description" content={metadescription} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>{title} |🚴PMPKN🎃</title>
+    <title>{metatitle} |🚴PMPKN🎃</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
