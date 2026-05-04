@@ -53,7 +53,11 @@ const { metatitle , metadescription = "Trasy rowerowe w Polsce i nie tylko! Arty
     <meta name="viewport" content="width=device-width" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="/hero-bg.CuzLpAQb.webp" fetchpriority="high">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    </noscript>
     <script is:inline>
       if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
