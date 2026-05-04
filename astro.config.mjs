@@ -8,7 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://pmpkn.cc",
+  site: "https://www.pmpkn.cc",
   integrations: [
     react(),
     sitemap({
