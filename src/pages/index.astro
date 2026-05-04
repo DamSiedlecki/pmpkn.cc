@@ -6,8 +6,8 @@ import BlogCardSquare from '../components/BlogCardSquare.astro';
 import TripCard from '../components/TripCard.astro';
 import StravaCard from '../components/StravaCard.astro';
 import { Image } from 'astro:assets';
-import heroBg from '../assets/img/hero-bg.webp';
-import jouiUs from '../assets/img/hero-bg.webp';
+import heroBg from '../assets/img/hero-bg-o.webp';
+import jouiUs from '../assets/img/hero-bg-o.webp';
 import { getLatestActivities } from '../utils/strava.ts';
 
 
@@ -24,7 +24,7 @@ const stravaActivities = await getLatestActivities(3);
   <section class="relative min-h-[80vh] overflow-hidden bg-slate-100 pt-20  text-slate-900 transition-colors duration-300 dark:bg-[#0a0a0c] dark:text-white">
   <img
     src={heroBg.src}
-    alt=""
+    alt="Trasa rowerowa na gran canarii - Blog rowerowy PMPKN on Bike"
     class="absolute inset-0 z-0 w-full h-full object-cover opacity-90 dark:opacity-50"
     fetchpriority="high"
     decoding="async"
